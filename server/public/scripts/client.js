@@ -7,6 +7,8 @@ $(document).ready(function(){
 function addClickHandlers() {
   $('#submitBtn').on('click', handleSubmit);
   $(document).on('click', '.deleteBtn', deleteBook);
+  $(document).on('click', '.isRead', updateBook);
+
 
   // TODO - Add code for edit & delete buttons
 }
@@ -59,6 +61,12 @@ function renderBooks(books) {
       <tr data-id="${book.id}">
         <td>${book.title}</td>
         <td>${book.author}</td>
+        <td>${book.isRead}</td>
+        <td>
+          <button class=isRead>
+            Completed
+          </button>
+        </td>
         <td>
           <button class=deleteBtn>
             Delete
@@ -87,5 +95,8 @@ function deleteBook() {
       console.log('delete failed', err);
       res.sendStatus(500);
     });
+}
 
+function updateBook() {
+  console.log('book has been read');
 }
