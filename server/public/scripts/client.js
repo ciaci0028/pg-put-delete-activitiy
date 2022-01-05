@@ -58,7 +58,7 @@ function renderBooks(books) {
     let book = books[i];
     // For each book, append a new row to our table
     $('#bookShelf').append(`
-      <tr data-id="${book.id}">
+      <tr data-read="${book.isRead}" data-id="${book.id}">
         <td>${book.title}</td>
         <td>${book.author}</td>
         <td>${book.isRead}</td>
@@ -98,5 +98,25 @@ function deleteBook() {
 }
 
 function updateBook() {
-  console.log('book has been read');
+  // Fetching book ID and read status
+  let bookID = $(this).parents('tr').data('id');
+  let isRead = $(this).parents('tr').data('read');
+  
+  // Ajax for updating
+  $.ajax({
+    method: 'PUT',
+    url: `/books/${bookID}`,
+    data: {
+      isRead: true
+    }
+  })
+    .then(() => {
+      console.log('update successful');
+      refreshBooks();
+    })
+    .catch((err) => {
+      console.log('update failed', err);
+      res.sendStatus(500);
+    })
+  
 }
