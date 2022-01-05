@@ -81,8 +81,7 @@ function deleteBook() {
   })
     .then(() => {
       console.log('delete successful!');
-      // Thumbs up
-      res.sendStatus(200);
+      refreshBooks();
     })
     .catch((err) => {
       console.log('delete failed', err);
