@@ -49,7 +49,7 @@ router.delete('/:id', (req, res) => {
   // Create request for SQL database
   let queryText = `
     DELETE FROM "books"
-    WHERE id = $1
+    WHERE id = $1;
   `;
 
   // Don't allow people to break it
@@ -67,5 +67,29 @@ router.delete('/:id', (req, res) => {
     });
 })
 
+router.put('/:id', (req, res) => {
+  console.log('in book router put', req.body);
+
+  let queryText = `
+    UPDATE "books"
+    SET "isRead" = $1
+    WHERE "id" = $2;
+  `;
+
+  let queryParams = [
+    req.body.isRead,
+    req.params.id
+  ];
+
+  pool.query(queryText, queryParams)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log('error in router put book router', err);
+      res.sendStatus(500);
+    })
+
+})
 
 module.exports = router;
