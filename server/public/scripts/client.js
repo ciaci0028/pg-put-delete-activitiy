@@ -7,6 +7,8 @@ $(document).ready(function(){
 function addClickHandlers() {
   $('#submitBtn').on('click', handleSubmit);
   $(document).on('click', '.deleteBtn', deleteBook);
+  $(document).on('click', '.isRead', updateBook);
+
 
   // TODO - Add code for edit & delete buttons
 }
@@ -56,9 +58,15 @@ function renderBooks(books) {
     let book = books[i];
     // For each book, append a new row to our table
     $('#bookShelf').append(`
-      <tr data-id="${book.id}">
+      <tr data-read="${book.isRead}" data-id="${book.id}">
         <td>${book.title}</td>
         <td>${book.author}</td>
+        <td>${book.isRead}</td>
+        <td>
+          <button class=isRead>
+            Completed
+          </button>
+        </td>
         <td>
           <button class=deleteBtn>
             Delete
@@ -87,5 +95,28 @@ function deleteBook() {
       console.log('delete failed', err);
       res.sendStatus(500);
     });
+}
 
+function updateBook() {
+  // Fetching book ID and read status
+  let bookID = $(this).parents('tr').data('id');
+  let isRead = $(this).parents('tr').data('read');
+  
+  // Ajax for updating
+  $.ajax({
+    method: 'PUT',
+    url: `/books/${bookID}`,
+    data: {
+      isRead: true
+    }
+  })
+    .then(() => {
+      console.log('update successful');
+      refreshBooks();
+    })
+    .catch((err) => {
+      console.log('update failed', err);
+      res.sendStatus(500);
+    })
+  
 }
